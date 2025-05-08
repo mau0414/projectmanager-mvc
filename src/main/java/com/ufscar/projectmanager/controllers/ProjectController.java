@@ -1,5 +1,6 @@
 package com.ufscar.projectmanager.controllers;
 
+import com.ufscar.projectmanager.dto.ProjectRequest;
 import com.ufscar.projectmanager.models.Project;
 import com.ufscar.projectmanager.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Arrays;
 
 @Controller
 public class ProjectController {
@@ -20,9 +19,7 @@ public class ProjectController {
 
     @GetMapping("/projects")
     public String index(Model model) {
-        System.out.println("teste");
         List<Project> projects = this.projectRepository.findAll();
-        System.out.println(projects);
         model.addAttribute("projects", projects);
         model.addAttribute("name", "mauricio");
 
@@ -36,9 +33,10 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")
-    public String create(Project project) {
+    public String create(ProjectRequest request) {
 
-
+        Project project = request.toModel();
+        projectRepository.save(project);
 
         return "redirect:/projects";
     }
