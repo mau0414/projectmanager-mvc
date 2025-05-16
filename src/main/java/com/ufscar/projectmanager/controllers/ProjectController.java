@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-//@RequestMapping(value = "/projects")
+@RequestMapping(value = "/projects")
 public class ProjectController {
 
     @Autowired
@@ -30,14 +30,14 @@ public class ProjectController {
         return "projects/index";
     }
 
-    @GetMapping("projects/new")
+    @GetMapping("/new")
     public ModelAndView newProject(ProjectRequest projectRequest) {
 
         ModelAndView mv = new ModelAndView("projects/new");
         return mv;
     }
 
-    @PostMapping("/projects")
+    @PostMapping("/")
     public String create(@Valid ProjectRequest projectRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             System.out.println("\n*****ERRO NO FORMULARIO. TENTE NOVAMENTE!*****\n");
@@ -51,7 +51,7 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-    @GetMapping("/projects/{id}")
+    @GetMapping("/{id}")
     public ModelAndView show(@PathVariable Long id, ProjectRequest projectRequest) {
 
         Optional<Project> optional = this.projectRepository.findById(id);
@@ -68,7 +68,7 @@ public class ProjectController {
     }
 
     // should be a PUT
-    @PostMapping("/projects/{id}")
+    @PostMapping("/{id}")
     public String update(@PathVariable Long id, @Valid ProjectRequest projectRequest, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()){
@@ -95,7 +95,7 @@ public class ProjectController {
     }
 
     // Should be a DELETE
-    @GetMapping("/projects/{id}/delete")
+    @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
 
         try {
