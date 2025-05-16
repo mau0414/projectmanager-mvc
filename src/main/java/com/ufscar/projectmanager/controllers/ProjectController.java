@@ -21,7 +21,7 @@ public class ProjectController {
     @Autowired
     private ProjectRepository projectRepository;
 
-    @GetMapping("/projects")
+    @GetMapping("")
     public String index(Model model) {
         List<Project> projects = this.projectRepository.findAll();
         model.addAttribute("projects", projects);
@@ -37,7 +37,7 @@ public class ProjectController {
         return mv;
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public String create(@Valid ProjectRequest projectRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             System.out.println("\n*****ERRO NO FORMULARIO. TENTE NOVAMENTE!*****\n");
