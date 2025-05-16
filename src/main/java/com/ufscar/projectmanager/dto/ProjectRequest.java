@@ -31,7 +31,7 @@ public class ProjectRequest {
         this.description = description;
     }
 
-    public LocalDate getStartDate(LocalDate startDate) {
+    public LocalDate getStartDate() {
         return this.startDate;
     }
 
@@ -49,7 +49,6 @@ public class ProjectRequest {
 
     public Project toModel() {
 
-        System.out.println("testeeeeeeeeeeeeeee ****************");
         System.out.println(this.endDate);
         Project project = new Project();
         project.setTitle(this.title);
@@ -58,6 +57,20 @@ public class ProjectRequest {
         project.setEndDate(this.endDate);
 
         return project;
+    }
+
+    public void fromModel(Project project) {
+        this.title = project.getTitle();
+        this.description = project.getDescription();
+        this.startDate = project.getStartDate();
+        this.endDate = project.getEndDate();
+    }
+
+    public void updateModel(Project project) {
+        project.setTitle(this.title);
+        project.setDescription(this.description);
+        project.setStartDate(this.startDate);
+        project.setEndDate(this.endDate);
     }
 
     @Override

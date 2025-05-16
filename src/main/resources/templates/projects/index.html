@@ -29,8 +29,8 @@
             <td th:text="${project.getEndDate()}">-</td>
             <td class="action-cell">
                 <div class="action-buttons">
-                    <a th:href="@{/editar/{id}(id=${project.getId()})}" class="btn">Editar</a>
-                    <a th:href="@{/excluir/{id}(id=${project.getId()})}" class="btn">Excluir</a>
+                    <a th:href="@{/projects/{id}(id=${project.getId()})}" class="btn">Detalhes</a>
+                    <a th:href="@{/projects/{id}/delete(id=${project.getId()})}" class="btn">Excluir</a>
                     <a th:href="@{/rota/{id}(id=${project.getId()})}" class="btn">Abrir projeto</a>
                 </div>
             </td>

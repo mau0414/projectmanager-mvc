@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
+//@RequestMapping(value = "/projects")
 public class ProjectController {
 
     @Autowired
@@ -50,4 +50,61 @@ public class ProjectController {
 
         return "redirect:/projects";
     }
+
+    @GetMapping("/projects/{id}")
+    public ModelAndView show(@PathVariable Long id, ProjectRequest projectRequest) {
+
+        Optional<Project> optional = this.projectRepository.findById(id);
+
+        if (optional.isPresent()) {
+            Project project = optional.get();
+            projectRequest.fromModel(project);
+            ModelAndView mv = new ModelAndView("projects/show");
+            mv.addObject("projectId", id);
+            return mv;
+        } else {
+            return  new ModelAndView("redirect:/projects");
+        }
+    }
+
+    // should be a PUT
+    @PostMapping("/projects/{id}")
+    public String update(@PathVariable Long id, @Valid ProjectRequest projectRequest, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()){
+
+            System.out.println("\n*****ERRO NO FORMULARIO DE EDICAO. TENTE NOVAMENTE!*****\n");
+            return "projects/show";
+
+        } else {
+
+            Optional<Project> optional = this.projectRepository.findById(id);
+
+            if (optional.isPresent()){
+                Project project = optional.get();
+                projectRequest.updateModel(project);
+                this.projectRepository.save(project);
+
+            } else {
+
+                System.out.println("\n*****ERRO NO FORMULARIO DE EDICAO. TENTE NOVAMENTE!*****\n");
+
+            }
+            return "redirect:/projects";
+        }
+    }
+
+    // Should be a DELETE
+    @GetMapping("/projects/{id}/delete")
+    public String delete(@PathVariable Long id) {
+
+        try {
+            this.projectRepository.deleteById(id);
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+
+        return "redirect:/projects";
+    }
+
 }
