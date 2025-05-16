@@ -3,6 +3,7 @@ package com.ufscar.projectmanager.models;
 import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
 
+import javax.sound.midi.SysexMessage;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -75,11 +76,18 @@ public class Project {
     }
 
     public LocalDate getEndDate() {
-        return startDate;
+        return endDate;
     }
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        System.out.println("dentro do model");
+        System.out.println(this.endDate);
+        return "sla";
     }
 }
 

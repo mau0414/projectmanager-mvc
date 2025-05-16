@@ -1,12 +1,16 @@
 package com.ufscar.projectmanager.dto;
 
 import com.ufscar.projectmanager.models.Project;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class ProjectRequest {
 
+    @NotBlank
+    @NotNull
     private String title;
+
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -45,6 +49,8 @@ public class ProjectRequest {
 
     public Project toModel() {
 
+        System.out.println("testeeeeeeeeeeeeeee ****************");
+        System.out.println(this.endDate);
         Project project = new Project();
         project.setTitle(this.title);
         project.setDescription(this.description);

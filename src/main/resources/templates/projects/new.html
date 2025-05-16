@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Criar Novo Projeto</title>
@@ -89,9 +89,10 @@
 <body>
 <div class="container">
     <h2>Criar Novo Projeto</h2>
-    <form action="/projects" method="post">
+    <form th:object="${projectRequest}" action="/projects" method="post">
         <label for="title">Título do Projeto</label>
-        <input type="text" id="title" name="title" required>
+        <input class="form-control" id="title" th:errorclass="is-invalid" type="text" th:field="*{title}">
+        <div class="invalid-feedback" th:errors="*{title}"></div>
 
         <label for="startDate">Data de Início</label>
         <input type="date" id="startDate" name="startDate">
