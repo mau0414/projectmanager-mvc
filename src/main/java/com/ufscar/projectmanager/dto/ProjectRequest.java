@@ -69,8 +69,8 @@ public class ProjectRequest {
     public void updateModel(Project project) {
         project.setTitle(this.title);
         project.setDescription(this.description);
-        project.setStartDate(this.startDate);
-        project.setEndDate(this.endDate);
+        if (this.startDate != null) project.setStartDate(this.startDate);
+        if (this.endDate != null) project.setEndDate(this.endDate);
     }
 
     @Override
