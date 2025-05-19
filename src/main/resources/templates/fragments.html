@@ -1,6 +1,5 @@
-<head th:fragment="head(title)">
+<head th:fragment="head(title, cssFile)">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/style.css">
-
+    <link rel="stylesheet" th:href="@{/css/__${cssFile}__}" />
     <title th:text="${title}"></title>
 </head>
