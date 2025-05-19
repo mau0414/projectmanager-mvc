@@ -89,7 +89,7 @@
 <body>
 <div class="container">
     <h2>Criar Nova Tarefa</h2>
-    <form th:object="${taskRequest}" th:action="@{/projects/{id}/tasks(id=${projectId})}"  method="post">
+    <form th:object="${taskRequest}" th:action="@{/tasks}"  method="post">
         <label for="title">Título da tarefa</label>
         <input class="form-control" id="title" th:errorclass="is-invalid" type="text" th:field="*{title}">
         <div class="invalid-feedback" th:errors="*{title}"></div>

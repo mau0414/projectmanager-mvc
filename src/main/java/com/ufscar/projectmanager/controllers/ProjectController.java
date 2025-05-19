@@ -3,6 +3,7 @@ package com.ufscar.projectmanager.controllers;
 import com.ufscar.projectmanager.dto.ProjectRequest;
 import com.ufscar.projectmanager.models.Project;
 import com.ufscar.projectmanager.repositories.ProjectRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -105,6 +106,12 @@ public class ProjectController {
         }
 
         return "redirect:/projects";
+    }
+
+    @GetMapping("/open/{id}")
+    public String open(@PathVariable Long id, HttpSession session) {
+        session.setAttribute("projectId", id);
+        return "redirect:/tasks";
     }
 
 }

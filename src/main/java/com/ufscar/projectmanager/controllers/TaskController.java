@@ -7,22 +7,21 @@ import com.ufscar.projectmanager.models.Task;
 import com.ufscar.projectmanager.models.TaskStatus;
 import com.ufscar.projectmanager.repositories.ProjectRepository;
 import com.ufscar.projectmanager.repositories.TaskRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/tasks")
 public class TaskController {
 
     @Autowired
@@ -31,17 +30,25 @@ public class TaskController {
     @Autowired
     private ProjectRepository projectRepository;
 
-    @GetMapping("/projects/{id}/tasks")
-    public String index(@PathVariable Long id, Model model) {
+    @ModelAttribute
+    public void addProject(HttpSession session, Model model) {
+        Long projectId = (Long) session.getAttribute("projectId");
 
-        List<Task> tasks = this.taskRepository.findByProjectId(id);
+        if (projectId != null) {
+            Optional<Project> optional = this.projectRepository.findById(projectId);
+            Project project = optional.get();
+            model.addAttribute("project", project);
+        }
+    }
+
+    @GetMapping("")
+    public String index(HttpSession session, Model model) {
+
+        Long projectId = (Long) session.getAttribute("projectId");
+        List<Task> tasks = this.taskRepository.findByProjectId(projectId);
         List<Task> todoTasks = new ArrayList<>();
         List<Task> inProgressTasks = new ArrayList<>();
         List<Task> doneTasks = new ArrayList<>();
-
-        Optional<Project> optional = this.projectRepository.findById(id);
-        Project project = optional.get();
-        model.addAttribute("project", project);
 
         for (Task task : tasks) {
             TaskStatus status = task.getStatus();
@@ -55,42 +62,64 @@ public class TaskController {
         model.addAttribute("doneTasks", doneTasks);
 
         return "tasks/index";
-
     }
 
-    @GetMapping("/projects/{id}/tasks/new")
-    public ModelAndView newTask(@PathVariable Long id, TaskRequest taskRequest) {
+    @GetMapping("/new")
+    public ModelAndView newTask(TaskRequest taskRequest) {
 
         ModelAndView mv = new ModelAndView("tasks/new");
-        mv.addObject("projectId", id);
-
         return mv;
     }
 
-    @PostMapping("projects/{id}/tasks")
-    public String create(@PathVariable Long id, @Valid TaskRequest taskRequest, BindingResult bindingResult) {
+    @PostMapping("")
+    public String create(HttpSession session, @Valid TaskRequest taskRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             System.out.println("\n*****ERRO NO FORMULARIO. TENTE NOVAMENTE!*****\n");
-//            return "tasks/new";
+            return "tasks/new";
         } else {
-            Optional<Project> optional = this.projectRepository.findById(id);
+            Long projectId = (Long) session.getAttribute("projectId");
+            Optional<Project> optional = this.projectRepository.findById(projectId);
             Project project = optional.get();
             Task task = taskRequest.toModel(project);
             taskRepository.save(task);
         }
 
-        return "redirect:/projects/" + id + "/tasks";
+        return "redirect:/tasks";
     }
 
-    @GetMapping("/projects/{projectId}/tasks/{id}/progress")
-    public String updateInProgress(@PathVariable Long projectId, @PathVariable Long id) {
+    @GetMapping("/{id}/progress")
+    public String updateInProgress(@PathVariable Long id) {
 
         Optional<Task> optional = this.taskRepository.findById(id);
         Task task = optional.get();
         task.setStatus(TaskStatus.INPROGRESS);
         this.taskRepository.save(task);
 
-        return "redirect:/projects/" + projectId + "/tasks";
+        return "redirect:/tasks";
+    }
+
+    @GetMapping("/{id}/done")
+    public String updateInDone(@PathVariable Long id) {
+
+        Optional<Task> optional = this.taskRepository.findById(id);
+        Task task = optional.get();
+        task.setStatus(TaskStatus.DONE);
+        this.taskRepository.save(task);
+
+        return "redirect:/tasks";
+    }
+
+    // Should be a DELETE
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+
+        try {
+            this.taskRepository.deleteById(id);
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+
+        return "redirect:/tasks";
     }
 }
 

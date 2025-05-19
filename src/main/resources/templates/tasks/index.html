@@ -127,7 +127,7 @@
 <div th:object="${project}" class="container">
     <div class="header">
         <h2 th:text="*{title}">Nome do Projeto</h2>
-        <a th:href="@{/projects/{id}/tasks/new(id=${project.id})}" class="btn btn-create">Criar Tarefa</a>
+        <a th:href="@{/tasks/new}" class="btn btn-create">Criar Tarefa</a>
     </div>
 
     <div class="board">
@@ -141,7 +141,7 @@
                 <div class="actions">
                     <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-edit">Editar</a>
                     <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-delete">Excluir</a>
-                    <a th:href="@{/projects/{projectId}/tasks/{id}/progress(projectId=${project.id}, id=${task.id})}" class="btn btn-move">Mover para Em Progresso</a>
+                    <a th:href="@{/tasks/{id}/progress(projectId=${project.id}, id=${task.id})}" class="btn btn-move">Mover para Em Progresso</a>
                 </div>
             </div>
         </div>
@@ -155,8 +155,8 @@
                 <p th:text="${task.description}">Descrição da tarefa...</p>
                 <div class="actions">
                     <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-edit">Editar</a>
-                    <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-delete">Excluir</a>
-                    <a th:href="@{/tasks/move/{id}/done(id=${task.id})}" class="btn btn-move">Mover para Concluído</a>
+                    <a th:href="@{/tasks/{id}(id=${task.id})}" class="btn btn-delete">Excluir</a>
+                    <a th:href="@{/tasks/{id}/done(id=${task.id})}" class="btn btn-move">Mover para Concluído</a>
                 </div>
             </div>
         </div>

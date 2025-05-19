@@ -31,7 +31,7 @@
                 <div class="action-buttons">
                     <a th:href="@{/projects/{id}(id=${project.getId()})}" class="btn">Detalhes</a>
                     <a th:href="@{/projects/{id}/delete(id=${project.getId()})}" class="btn">Excluir</a>
-                    <a th:href="@{/projects/{id}/tasks(id=${project.getId()})}" class="btn">Abrir projeto</a>
+                    <a th:href="@{/projects/open/{id}(id=${project.getId()})}" class="btn">Abrir projeto</a>
                 </div>
             </td>
         </tr>
