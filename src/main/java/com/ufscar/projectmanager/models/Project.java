@@ -18,7 +18,7 @@ public class Project {
     private String title;
 
 //    list do java? ou outro?
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "project")
     private List<Task> tasks;
 
     private String description;
@@ -87,7 +87,7 @@ public class Project {
     public String toString() {
         System.out.println("dentro do model");
         System.out.println(this.endDate);
-        return "sla";
+        return this.title;
     }
 }
 

@@ -1,8 +1,9 @@
 package com.ufscar.projectmanager.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Task {
@@ -14,15 +15,20 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private TaskStatus status;
 
+    @NotNull()
+    @ManyToOne
+    @JoinColumn(name="project_id")
+    private Project project;
+
     private String description;
 
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 
     public Task() { }
 
@@ -58,19 +64,23 @@ public class Task {
         this.status = status;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
-        return startDate;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
+    public Project getProject() { return project; }
+
+    public void setProject(Project project) { this.project = project; }
 }
