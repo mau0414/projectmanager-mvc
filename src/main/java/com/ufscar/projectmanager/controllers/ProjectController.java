@@ -2,7 +2,9 @@ package com.ufscar.projectmanager.controllers;
 
 import com.ufscar.projectmanager.dto.ProjectRequest;
 import com.ufscar.projectmanager.models.Project;
+import com.ufscar.projectmanager.models.User;
 import com.ufscar.projectmanager.repositories.ProjectRepository;
+import com.ufscar.projectmanager.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,28 @@ public class ProjectController {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @ModelAttribute
+    public void addName(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute("userId");
+        System.out.println("teste " + userId);
+
+        if (userId != null) {
+            Optional<User> optional = this.userRepository.findById(userId);
+            String name = optional.get().getName();
+            model.addAttribute("name", name);
+        }
+    }
+
     @GetMapping("")
-    public String index(Model model) {
-        List<Project> projects = this.projectRepository.findAll();
+    public String index(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute("userId");
+        System.out.println(userId);
+        List<Project> projects = this.projectRepository.findByUserId(userId);
         model.addAttribute("projects", projects);
-        model.addAttribute("name", "mauricio");
+//        model.addAttribute("name", name);
 
         return "projects/index";
     }
@@ -39,12 +58,14 @@ public class ProjectController {
     }
 
     @PostMapping("")
-    public String create(@Valid ProjectRequest projectRequest, BindingResult bindingResult) {
+    public String create(HttpSession session, @Valid ProjectRequest projectRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             System.out.println("\n*****ERRO NO FORMULARIO. TENTE NOVAMENTE!*****\n");
             return "projects/new";
         } else {
-            Project project = projectRequest.toModel();
+            Long userId = (Long) session.getAttribute("userId");
+            User user = this.userRepository.findById(userId).get();
+            Project project = projectRequest.toModel(user);
             System.out.println(project);
             projectRepository.save(project);
         }

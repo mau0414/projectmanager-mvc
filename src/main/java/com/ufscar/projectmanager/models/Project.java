@@ -1,6 +1,7 @@
 package com.ufscar.projectmanager.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.cglib.core.Local;
 
 import javax.sound.midi.SysexMessage;
@@ -17,7 +18,6 @@ public class Project {
     @Column(nullable = false)
     private String title;
 
-//    list do java? ou outro?
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "project")
     private List<Task> tasks;
 
@@ -26,6 +26,11 @@ public class Project {
     private LocalDate    startDate;
 
     private LocalDate endDate;
+
+    @NotNull()
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     public Project() { }
 
@@ -82,6 +87,10 @@ public class Project {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user; }
 
     @Override
     public String toString() {

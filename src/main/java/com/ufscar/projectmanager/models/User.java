@@ -1,7 +1,8 @@
 package com.ufscar.projectmanager.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 @Entity
 @Table(name = "User")
@@ -12,6 +13,9 @@ public class User {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private List<Project> projects;
 
     public User() { }
 
@@ -30,4 +34,8 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<Project> getProjects() { return projects; }
+
+    public void setProjects(List<Project> projects) { this.projects = projects; }
 }

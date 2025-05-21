@@ -43,6 +43,14 @@ th {
     background-color: #2980b9;
 }
 
+.btn-logout {
+    background-color: #e74c3c;
+}
+
+.btn-logout:hover {
+    background-color: #c0392b;
+}
+
 .top-bar {
     display: flex;
     justify-content: space-between;
