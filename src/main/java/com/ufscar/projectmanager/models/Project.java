@@ -94,8 +94,6 @@ public class Project {
 
     @Override
     public String toString() {
-        System.out.println("dentro do model");
-        System.out.println(this.endDate);
         return this.title;
     }
 }

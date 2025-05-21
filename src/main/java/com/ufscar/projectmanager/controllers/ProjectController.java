@@ -30,7 +30,6 @@ public class ProjectController {
     @ModelAttribute
     public void addName(HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("userId");
-        System.out.println("teste " + userId);
 
         if (userId != null) {
             Optional<User> optional = this.userRepository.findById(userId);
@@ -42,10 +41,8 @@ public class ProjectController {
     @GetMapping("")
     public String index(HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("userId");
-        System.out.println(userId);
         List<Project> projects = this.projectRepository.findByUserId(userId);
         model.addAttribute("projects", projects);
-//        model.addAttribute("name", name);
 
         return "projects/index";
     }
@@ -66,7 +63,6 @@ public class ProjectController {
             Long userId = (Long) session.getAttribute("userId");
             User user = this.userRepository.findById(userId).get();
             Project project = projectRequest.toModel(user);
-            System.out.println(project);
             projectRepository.save(project);
         }
 

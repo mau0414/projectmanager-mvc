@@ -50,7 +50,6 @@ public class ProjectRequest {
 
     public Project toModel(User user) {
 
-        System.out.println(this.endDate);
         Project project = new Project();
         project.setTitle(this.title);
         project.setDescription(this.description);

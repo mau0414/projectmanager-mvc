@@ -67,24 +67,12 @@ public class TaskRequest {
         task.setEndDate(this.endDate);
         task.setStatus(TaskStatus.TODO);
         task.setProject(project);
-        System.out.println("*********************=" + task.getProject().getId());
-        System.out.println("*********************=" + task.getProject());
-
-        System.out.println("*********************=" + task.getTitle());
         return task;
-    }
-
-    public void fromModel(Project project) {
-        System.out.println("aqui dentro do from model **************** " + project);
-
-        this.setProject(project);
-        System.out.println("aqui dentro do from model 2 **************** " + this.project);
     }
 
     @Override
     public String toString() {
         return "task title = " + this.getTitle() + " " + this.getEndDate();
     }
-
 
 }

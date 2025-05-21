@@ -41,14 +41,11 @@ public class UserController {
             if (user == null) {
                 this.userRepository.save(userFromRequest);
                 userId = userFromRequest.getId();
-                System.out.println("no if" + userId);
             } else {
                 userId = user.getId();
-                System.out.println("no else" + userId);
             }
 
             ModelAndView mv = new ModelAndView("redirect:/projects");
-//            mv.addObject("name", username);
             session.setAttribute("userId", userId);
 
             return mv;
